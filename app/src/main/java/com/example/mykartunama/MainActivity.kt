@@ -1,6 +1,7 @@
 package com.example.mykartunama
 
 import android.os.Bundle
+import androidx.compose.ui.res.painterResource
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -47,7 +48,7 @@ fun BusinessCard() {
     ) {
         // Bagian logo dan nama
         Image(
-            painter = painterResource(id = R.drawable.android_logo),
+            painter = painterResource(id = R.drawable.ic_android_black_24dp),
             contentDescription = "Android Logo",
             modifier = Modifier
                 .size(120.dp)
@@ -70,9 +71,9 @@ fun BusinessCard() {
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            ContactRow(R.drawable.baseline_local_phone_24, "+62 (123) 444 555 666")
+            ContactRow(R.drawable.outline_add_ic_call_24, "+62 (123) 444 555 666")
             ContactRow(R.drawable.outline_airplane_ticket_24, "@AndroidLeo")
-            ContactRow(R.drawable.outline_alternate_email_24, "Leo@android.com")
+            ContactRow(R.drawable.outline_attach_email_24, "Leo@android.com")
         }
     }
 }
