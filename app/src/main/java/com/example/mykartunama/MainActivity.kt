@@ -1,5 +1,6 @@
 package com.example.mykartunama
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,6 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mykartunama.ui.theme.MyKartuNamaTheme
 import kotlinx.coroutines.delay
+import androidx.compose.ui.platform.LocalContext
+import android.net.Uri
+import androidx.compose.foundation.clickable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,7 +104,7 @@ fun BusinessCard() {
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_android_black_24dp),
+                        painter = painterResource(id = R.drawable.outline_account_circle_24),
                         contentDescription = "Android Logo",
                         modifier = Modifier.size(80.dp)
                     )
@@ -116,7 +120,7 @@ fun BusinessCard() {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "Android Developer Pro",
+                    text = "Kartu Nama",
                     fontSize = 18.sp,
                     color = Color(0xFF388E3C) // hijau medium
                 )
@@ -131,7 +135,7 @@ fun BusinessCard() {
 
                 // Deskripsi Singkat
                 Text(
-                    text = "Pengembang Android yang membuat aplikasi modern, responsif, dan user-friendly. Berpengalaman dengan Jetpack Compose, Kotlin, dan desain UI/UX profesional.",
+                    text = "Seorang Mahasiswa",
                     textAlign = TextAlign.Justify,
                     color = Color(0xFF2E3A2E), // hijau gelap nyaman dibaca
                     fontSize = 14.sp,
@@ -143,21 +147,15 @@ fun BusinessCard() {
                 // Kontak
                 ContactTable(
                     phone = "+62 812-3965-5375",
-                    username = "@Lionel_mesi",
-                    email = "lionel_mesi@gmail.com",
-                    linkedin = "linkedin.com/in/lionel",
+                    username = "@Lionel mesi",
+                    email = "lionelmesi@gmail.com",
+                    instagram = "@Instagram.com/lionelmesi",
 
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Tombol Interaktif
-                Button(
-                    onClick = { /* aksi panggil/email */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF388E3C))
-                ) {
-                    Text(text = "Hubungi Saya", color = Color(0xFFF1F8E9))
-                }
+
             }
         }
     }
@@ -168,9 +166,10 @@ fun ContactTable(
     phone: String,
     username: String,
     email: String,
-    linkedin: String,
+    instagram: String,
 
 ) {
+    val context = LocalContext.current
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.Start,
@@ -178,20 +177,30 @@ fun ContactTable(
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
     ) {
-        TableRow("📞 Telepon", phone)
+        TableRow("📞 No hp", phone) {
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+            context.startActivity(intent)
+        }
         TableRow("💬 Username", username)
-        TableRow("✉️ Email", email)
-        TableRow("🔗 LinkedIn", linkedin)
-
+        TableRow("✉️ Email", email) {
+            val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
+            context.startActivity(intent)
+        }
+        TableRow("📸 Instagram", instagram) {
+            val intent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/leomessi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==${username.removePrefix("@")}"))
+            context.startActivity(intent)
+        }
     }
 }
 
 @Composable
-fun TableRow(label: String, value: String) {
+fun TableRow(label: String, value: String, onclick: () -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 4.dp)
+            .clickable { onclick()}, // Agar bisa di klik
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
